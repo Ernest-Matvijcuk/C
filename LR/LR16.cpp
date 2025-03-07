@@ -1,17 +1,15 @@
 #include <iostream>
 #include <ctime>
-#include <cmath>  // Для abs()
+#include <cmath>
 
 using namespace std;
 
-// Структура для збереження дати
 struct Date {
     int year;
     int month;
     int day;
 };
 
-// Функція визначення поточної дати
 Date today() {
     time_t t = time(NULL);
     tm tl = *localtime(&t);
@@ -22,12 +20,10 @@ Date today() {
     return currentDate;
 }
 
-// Функція перевірки на високосний рік
 bool isLeap(int year) {
     return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
 }
 
-// Функція отримання кількості днів у місяці
 int monthLength(int year, int month) {
     int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     if (month == 2 && isLeap(year)) {
@@ -36,11 +32,9 @@ int monthLength(int year, int month) {
     return daysInMonth[month - 1];
 }
 
-// Функція обчислення кількості днів між двома датами
 int daysBetween(Date birth, Date current) {
     int totalDays = 0;
 
-    // Додаємо дні від дати народження до кінця цього року
     for (int m = birth.month; m <= 12; m++) {
         if (m == birth.month) {
             totalDays += monthLength(birth.year, m) - birth.day;
@@ -49,12 +43,10 @@ int daysBetween(Date birth, Date current) {
         }
     }
 
-    // Додаємо дні для повних років між народженням і поточним роком
     for (int y = birth.year + 1; y < current.year; y++) {
         totalDays += isLeap(y) ? 366 : 365;
     }
 
-    // Додаємо дні від початку поточного року до поточної дати
     for (int m = 1; m < current.month; m++) {
         totalDays += monthLength(current.year, m);
     }
